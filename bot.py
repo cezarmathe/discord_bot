@@ -48,6 +48,13 @@ async def on_message(message):
     elif message.content.startswith('!ragaie'):
         await client.send_message(message.channel, 'Ragai ca un porc. :                                ^)')
 
+    elif message.content.startswith('!say'):
+        saymessage = message.content[5:]
+        await client.send_message(message.channel, saymessage.upper())
+
+    elif message.content.startswith('!muie_la_republica'):
+        await client.send_message(message.channel, 'Cei ce doresc rau republicii sug pula pe vecie!')
+
     elif message.content.startswith('!'):
         await client.send_message(message.channel, 'Unknown command. Type !help for help.')
 
