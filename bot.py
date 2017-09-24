@@ -45,6 +45,9 @@ async def on_message(message):
     elif message.content.startswith('!biblia'):
         await client.send_message(message.channel, 'https://biblia.resursecrestine.ro/')
 
+    elif message.content.startswith('!ragaie'):
+        await client.send_message(message.channel, 'Ragai ca un porc. :                                ^)')
+
     elif message.content.startswith('!'):
         await client.send_message(message.channel, 'Unknown command. Type !help for help.')
 
