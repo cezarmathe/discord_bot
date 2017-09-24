@@ -42,7 +42,7 @@ async def on_message(message):
         messagedick = ''.join(['http://www.marimea.xyz/', dick])
         await client.send_message(message.channel, messagedick)
 
-elif message.content.startswith('!biblia'):
+    elif message.content.startswith('!biblia'):
         await client.send_message(message.channel, 'https://biblia.resursecrestine.ro/')
 
     elif message.content.startswith('!'):
