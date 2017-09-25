@@ -2,6 +2,7 @@
 
 import discord
 import asyncio
+import re
 
 
 import gspread
@@ -24,33 +25,62 @@ NAME_ROW = 2                #   row for extracting the name
 DESCRIPTION_ROW = 3         #   row for extracting the description
 COMMAND_ROW = 4             #   row for extracting the command name
 CODE_ROW = 5                #   row for extracting the command code
-client = discord.Client(command_prefix = '!')   #   actual client
-teststring = ''
+TYPE_ROW = 6                #   row for extracting the type of command
+client = discord.Client()   #   actual client
+# teststring = ''
 
 
 #------------------------------------------------------------------------------------
 
 #-------FUNCTIONS--------------------------------------------------------------------
 
-def check_command(MESSAGE):
+def bot_init():
+    if (disc_commands.cell(1,1).value != ""):
+        bot_update()
+    else:
+        MAX_COMMANDS = 0
+        disc_commands.cell(1,1).value = 0
+
+def bot_update():
+    MAX_COMMANDS = int(disc_commands.cell(1,1).value)
+
+async def print_help(message : discord.message):
+    help_message_str = ['The prefix for using this bot is \'!\'', 'For a list of commands, type \'!commands\'', 'https://github.com/cezarmathe/discord_bot is the official github repository for this bot', 'Have fun!']
+    await client.send_message(message.channel, help_message_str[0])
+    await client.send_message(message.channel, help_message_str[1])
+    await client.send_message(message.channel, help_message_str[2])
+    await client.send_message(message.channel, help_message_str[3])
+
+def getWords(text):
+    return re.compile('\w+').findall(text)
+
+async def print_commands(message : discord.message):
+    com_mes = ''
+    for i in range(MAX_COMMANDS):
+        com_mes = ''.join([str(i + 1), '. ', disc_commands.cell(INDEX_START + i, NAME_ROW).value, ' - !', disc_commands.cell(INDEX_START + i, COMMAND_ROW).value])
+        await client.send_message(message.channel, com_mes)
+
+def check_for_command(MESSAGE):
     com_iterator = 0
     found_command = 0
     while com_iterator < MAX_COMMANDS:
-        if MESSAGE == disc_commands.cell(INDEX_START + com_iterator, COMMAND_ROW).value:
+        if MESSAGE.startswith(disc_commands.cell(INDEX_START + com_iterator, COMMAND_ROW).value):
             teststring = disc_commands.cell(INDEX_START + com_iterator, CODE_ROW).value
             found_command = 1
-            print(teststring)
             break  
         else:
             com_iterator += 1         
     if (found_command == 0):
-        teststring = 'Unknown command. Try !help for more help.'
+        teststring = 'Unknown command. Try !help or for more help or !commands for a list of available commands.'
     return teststring
-
 
 async def nyez(message : discord.message):
     await client.send_message(message.channel, 'nyez')
-            
+   
+async def do_command():
+    
+
+
 #------------------------------------------------------------------------------------     
     
 #-------BODY-------------------------------------------------------------------------
@@ -65,11 +95,11 @@ async def on_ready():
 @client.event
 async def on_message(message):
     if message.content.startswith('!help'):
-        await client.send_message(message.channel, 'Help not available yet.')
-    elif message.content.startswith('!nyez'):
-        await nyez(message)
+        await print_help(message)
+    elif message.content.startswith('!commands'):
+        await print_commands(message)
     elif message.content.startswith('!'):
-        await client.send_message(message.channel, check_command(message.content[1:]))
+        await client.send_message(message.channel, check_for_command(message.content[1:]))
 
 client.run('MzUzNjE3MTc2NzkzNzEwNjEy.DIyULg.7J9_CWDYHr2PGeFJWmnPhRLV8BU')
 #--------------------------------------------------------------------------------------
