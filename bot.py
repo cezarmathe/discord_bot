@@ -98,6 +98,12 @@ async def on_message(message):
         await print_help(message)
     elif message.content.startswith('!commands'):
         await print_commands(message)
+    elif message.content.startswith('!say'):
+        await client.send_message(message.channel, message.content[5:].upper())
+    elif message.content.startswith('!spam'):
+        spamm = message.content[6:].split()
+        for i in range(int(spamm[0])):
+            await client.send_message(message.channel, spamm[1])
     elif message.content.startswith('!'):
         await check_for_command(message)
 
