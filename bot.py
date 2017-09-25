@@ -60,25 +60,27 @@ async def print_commands(message : discord.message):
         com_mes = ''.join([str(i + 1), '. ', disc_commands.cell(INDEX_START + i, NAME_ROW).value, ' - !', disc_commands.cell(INDEX_START + i, COMMAND_ROW).value])
         await client.send_message(message.channel, com_mes)
 
-def check_for_command(MESSAGE):
+async def check_for_command(message : discord.message):
     com_iterator = 0
     found_command = 0
+    MESSAGE = message.content[1:]
     while com_iterator < MAX_COMMANDS:
         if MESSAGE.startswith(disc_commands.cell(INDEX_START + com_iterator, COMMAND_ROW).value):
-            teststring = disc_commands.cell(INDEX_START + com_iterator, CODE_ROW).value
+            com_code = disc_commands.cell(INDEX_START + com_iterator, CODE_ROW).value
             found_command = 1
+            await do_command(message, com_code, com_iterator, disc_commands.cell(INDEX_START + com_iterator, TYPE_ROW).value)
             break  
         else:
             com_iterator += 1         
     if (found_command == 0):
-        teststring = 'Unknown command. Try !help or for more help or !commands for a list of available commands.'
-    return teststring
-
-async def nyez(message : discord.message):
-    await client.send_message(message.channel, 'nyez')
+        await client.send_message(message.channel, 'Unknown command. Try !help or for more help or !commands for a list of available commands')
    
-async def do_command():
-    
+async def do_command(message : discord.message, command_code, command_number, command_type):
+    if command_type == 0:
+        await client.send_message(message.channel, command_code)
+    else:
+        command_args = getWords(command_code)
+        
 
 
 #------------------------------------------------------------------------------------     
@@ -99,7 +101,8 @@ async def on_message(message):
     elif message.content.startswith('!commands'):
         await print_commands(message)
     elif message.content.startswith('!'):
-        await client.send_message(message.channel, check_for_command(message.content[1:]))
+        await check_for_command(message)
+
 
 client.run('MzUzNjE3MTc2NzkzNzEwNjEy.DIyULg.7J9_CWDYHr2PGeFJWmnPhRLV8BU')
 #--------------------------------------------------------------------------------------
