@@ -3,11 +3,8 @@
 import discord
 import asyncio
 import re
-
-
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-import pprint
 
 #-------OPENING THE DATABASE---------------------------------------------------------
 scope = ['https://spreadsheets.google.com/feeds']
@@ -27,22 +24,21 @@ COMMAND_ROW = 4             #   row for extracting the command name
 CODE_ROW = 5                #   row for extracting the command code
 TYPE_ROW = 6                #   row for extracting the type of command
 client = discord.Client()   #   actual client
-# teststring = ''
 
 
 #------------------------------------------------------------------------------------
 
 #-------FUNCTIONS--------------------------------------------------------------------
 
-def bot_init():
-    if (disc_commands.cell(1,1).value != ""):
-        bot_update()
-    else:
-        MAX_COMMANDS = 0
-        disc_commands.cell(1,1).value = 0
+# def bot_init():
+#     if (disc_commands.cell(1,1).value != ""):
+#         bot_update()
+#     else:
+#         MAX_COMMANDS = 0
+#         disc_commands.cell(1,1).value = 0
 
-def bot_update():
-    MAX_COMMANDS = int(disc_commands.cell(1,1).value)
+# def bot_update():
+#     MAX_COMMANDS = int(disc_commands.cell(1,1).value)
 
 async def print_help(message : discord.message):
     help_message_str = ['The prefix for using this bot is \'!\'', 'For a list of commands, type \'!commands\'', 'https://github.com/cezarmathe/discord_bot is the official github repository for this bot', 'Have fun!']
