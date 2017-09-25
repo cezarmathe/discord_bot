@@ -68,7 +68,8 @@ async def check_for_command(message : discord.message):
         if MESSAGE.startswith(disc_commands.cell(INDEX_START + com_iterator, COMMAND_ROW).value):
             com_code = disc_commands.cell(INDEX_START + com_iterator, CODE_ROW).value
             found_command = 1
-            await do_command(message, com_code, com_iterator, disc_commands.cell(INDEX_START + com_iterator, TYPE_ROW).value)
+            command_type = int(disc_commands.cell(INDEX_START + com_iterator, TYPE_ROW).value)
+            await do_command(message, com_code, com_iterator, command_type)
             break  
         else:
             com_iterator += 1         
@@ -80,6 +81,7 @@ async def do_command(message : discord.message, command_code, command_number, co
         await client.send_message(message.channel, command_code)
     else:
         command_args = getWords(command_code)
+        # to do code interpreting
         
 
 
