@@ -70,17 +70,19 @@ async def CHECK_CUSTOM_COMMAND(message : discord.message):
 async def DO_CUSTOM_COMMAND(message : discord.message, command_code, command_number, command_type):
     if command_type == 0:
         await client.send_message(message.channel, command_code)
+        return
     else:
         command_args = SEPARATE_ARGS(command_code)
         # to do code interpreting
         return
 
 
-async def UPDATE_COMMAND_NUMBER(message : discord.message, silent):
+async def UPDATE_COMMAND_NUMBER(message : discord.message, silent = False):
     MAX_COMMANDS = int(disc_commands.cell(1,1).value)
     if (silent):
         return
     await client.send_message(message.channel, 'Updated commands, there are ' + str(MAX_COMMANDS) + ' commands. Type !commands to see the list.')
+        
         
 async def CHECK_COMMAND(message : discord.message):
     args = await SEPARATE_ARGS(message.content)
@@ -102,7 +104,7 @@ async def CHECK_COMMAND_ZERO(arg, message : discord.message):
         await client.send_message(message.channel, message.content[5:].upper())
         return True
     if (arg == "update"):
-        await UPDATE_COMMAND_NUMBER(message, False)
+        await UPDATE_COMMAND_NUMBER(message)
         return True
     if (arg == "spam"):
         spamm = message.content[6:].split()
